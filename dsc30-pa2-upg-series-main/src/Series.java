@@ -20,13 +20,11 @@ public class Series {
          }
          // 2. 深拷贝 data 数组
          this.data = new Integer[_data.length];
-         for (int i = 0; i < _data.length; i++)
-         {
-            this.data[i] = _data[i];
-         }
+         System.arraycopy(_data, 0, this.data, 0, _data.length);
          // 3. 处理 _rowNames
          try {
-             // 检查长度是否匹配
+             // 检查长度是否匹配，如果在这里 _rowNames 是 null，
+             // 系统试图读取它的 .length 属性，Java 自动抛出 NullPointerException。
              if (_rowNames.length != _data.length) {
                  throw new IllegalArgumentException("Series(String[] _index, Integer[] _data): the length of _index and _data must be the same");
              }
@@ -40,12 +38,11 @@ public class Series {
                  this.rowNames[i] = _rowNames[i];
              }
          } catch(NullPointerException e)
-             // 4. 捕获 _rowNames 为 null 的情况
-             {
-                 this.rowNames = new String[_data.length];
-                 for (int i = 0; i < _data.length; i++) {
-                     this.rowNames[i] = String.valueOf(i);
-                 }
+         {
+             // 4. 捕获 _rowNames 为 null 的情况 ：用 "0","1","2"... 自动生成
+             this.rowNames = new String[_data.length];
+             for (int i = 0; i < _data.length; i++) {
+                 this.rowNames[i] = String.valueOf(i);
              }
          }
      }
@@ -54,32 +51,39 @@ public class Series {
       * Returns a string representation of the Series object.
       */
      public String toString() {
-         // TODO: Implement toString method
-         return "";
+         StringBuilder result = new StringBuilder();
+         result.append("Printing Series...\n\n");
+         for(int i = 0;i < data.length;i++)
+         {
+             result.append(rowNames[i]).append("\t").append(data[i]).append("\n");
+         }
+         return result.toString();
      }
  
      /**
       * Returns the length of the series object.
       */
-     public int getLength() {
-         // TODO: Implement getLength method
-         return 0;
-     }
+     public int getLength() { return data.length; }
  
      /**
       * Returns the row names of this Series object.
       */
      public String[] getRowNames() {
-         // TODO: Implement getRowNames method
-         return new String[0];
+         String[] copy = new String[rowNames.length];
+         System.arraycopy(rowNames, 0, copy, 0, rowNames.length);
+         return copy;
      }
  
      /**
       * Returns the data of this Series object as strings.
       */
      public String[] getData() {
-         // TODO: Implement getData method
-         return new String[0];
+         String[] copy = new String[data.length];
+         for (int i = 0; i < data.length; i++)
+         {
+             copy[i] = String.valueOf(data[i]);
+         }
+         return copy;
      }
  
      /**
@@ -149,4 +153,14 @@ public class Series {
          // TODO: Implement fillNullWithMean method
          // Handle ArithmeticException that could be raised from mean()
      }
+
+    public static void main(String[] args) {
+        String[] names = {"a", "b", "c"};
+        Integer[] values = {10, 20, 30};
+
+        Series s = new Series(names, values);
+
+        System.out.println(s);
+    }
+
  }
