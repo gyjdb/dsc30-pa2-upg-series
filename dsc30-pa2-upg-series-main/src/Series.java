@@ -13,9 +13,43 @@ public class Series {
       * @param _data an array of Integer data
       */
      public Series(String[] _rowNames, Integer[] _data) {
-         // TODO: Implement constructor
+         // 1. 检查 _data 是否为 null
+         if(_data == null)
+         {
+             throw new NullPointerException("Series(String[] _index, Integer[] _data): _data can't be null. Terminating the program");
+         }
+         // 2. 深拷贝 data 数组
+         this.data = new Integer[_data.length];
+         for (int i = 0; i < _data.length; i++)
+         {
+            this.data[i] = _data[i];
+         }
+         // 3. 处理 _rowNames
+         try {
+             // 检查长度是否匹配
+             if (_rowNames.length != _data.length) {
+                 throw new IllegalArgumentException("Series(String[] _index, Integer[] _data): the length of _index and _data must be the same");
+             }
+             // 初始化 _rowNames 数组
+             this.rowNames = new String[_rowNames.length];
+             // 检查 rowNames 是否含有 null
+             for (int i = 0; i < _rowNames.length; i++) {
+                 if (_rowNames[i] == null) {
+                     throw new IllegalArgumentException("Series(String[] _index, Integer[] _data): _rowNames is not valid");
+                 }
+                 this.rowNames[i] = _rowNames[i];
+             }
+         } catch(NullPointerException e)
+             // 4. 捕获 _rowNames 为 null 的情况
+             {
+                 this.rowNames = new String[_data.length];
+                 for (int i = 0; i < _data.length; i++) {
+                     this.rowNames[i] = String.valueOf(i);
+                 }
+             }
+         }
      }
- 
+
      /**
       * Returns a string representation of the Series object.
       */
