@@ -93,7 +93,34 @@ public class Series {
       * @param d the Integer data value to be added
       */
      public void append(String rn, Integer d) {
-         // TODO: Implement append method
+         // 1. 计算新长度
+         int oldLength = this.data.length;
+         int newLength = oldLength + 1;
+
+         // 2. 创建新数组
+         String[] newRowNames = new String[newLength];
+         Integer[] newData = new Integer[newLength];
+
+         // 3. 搬运旧数据
+         System.arraycopy(this.rowNames, 0, newRowNames, 0, oldLength);
+         System.arraycopy(this.data, 0, newData, 0, oldLength);
+
+         // 4. 处理新数据的 rowNames
+         if (rn == null)
+         {
+             newRowNames[oldLength] = String.valueOf(oldLength);
+         }
+         else
+         {
+             newRowNames[oldLength] = rn;
+         }
+
+         // 5. 填入新的 data
+         newData[oldLength] = d;
+
+         // 6. 更新引用
+         this.rowNames = newRowNames;
+         this.data = newData;
      }
  
      /**
@@ -102,8 +129,7 @@ public class Series {
       * @param rn the row name to search for
       */
      public Integer loc(String rn) {
-         // TODO: Implement loc method
-         return null;
+         return 0;
      }
  
      /**
