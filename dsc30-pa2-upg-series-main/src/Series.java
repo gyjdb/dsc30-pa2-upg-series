@@ -128,8 +128,26 @@ public class Series {
       *
       * @param rn the row name to search for
       */
-     public Integer loc(String rn) {
-         return 0;
+     public Integer loc(String rn) throws NullPointerException, IllegalArgumentException{
+          if(rn == null)
+          {
+               throw new NullPointerException("loc(String rn): rn can't be null");
+          }
+          // 2. 检查字符串是否为空
+          if(rn.isEmpty())
+          {
+               throw new IllegalArgumentException("loc(String rn): rn can't be empty");
+          }
+          // 3. 遍历 rowNames 进行查找
+          for(int i = 0;i < this.rowNames.length;i++)
+          {
+               if(this.rowNames[i].equals(rn))
+               {
+                    return data[i];
+               }
+          }
+          // 4. 没找到返回 null
+          return null;
      }
  
      /**
@@ -137,9 +155,25 @@ public class Series {
       *
       * @param rn an array of row names to search for
       */
-     public Integer[] loc(String[] rn) {
-         // TODO: Implement loc method for multiple row names
-         return new Integer[0];
+     public Integer[] loc(String[] rn) throws NullPointerException, IllegalArgumentException{
+          // 1. 检查输入是否为 null
+          if(rn == null)
+          {
+               throw new NullPointerException("loc(String[] rn): rn can't be null");
+          }
+          // 2. 检查数组是否为空
+          if(rn.length == 0)
+          {
+               throw new IllegalArgumentException("loc(String[] rn): rn can't be empty");
+          }
+          // 3. 创建存放数组
+          Integer[] results = new Integer[rn.length];
+          for(int i = 0;i < results.length;i++)
+          {
+               // 调用单个 loc 的方法
+               results[i] = loc(rn[i]);
+          }
+          return results;
      }
  
      /**
@@ -148,8 +182,13 @@ public class Series {
       * @param ind the index of the data to retrieve
       */
      public Integer iloc(int ind) {
-         // TODO: Implement iloc method
-         return null;
+         try {
+             // 直接访问数组，如果越界自动抛出异常
+             return data[ind];
+         } catch (ArrayIndexOutOfBoundsException e) {
+             System.out.println("the index " + ind + " is not valid.. returning null");
+             return null;
+         }
      }
  
      /**
@@ -158,8 +197,31 @@ public class Series {
       * @param rn the row name of the pair to be removed
       */
      public boolean drop(String rn) {
-         // TODO: Implement drop method
+         // 1. 检查 rn 是否为 null
+         if (rn == null)
+         {
+             throw new NullPointerException("drop(String rn): rn can't be null");
+         }
          return false;
+         // 2. 检查字符串是否为空
+         if(rn.isEmpty())
+         {
+             throw new IllegalArgumentException("drop(String rn): rn can't be empty");
+         }
+         // 3. 寻找要删除的 index
+         int indexToRemove = -1;
+         for(int i = 0;i < this.rowNames.length;i++)
+         {
+             if(this.rowNames[i].equals(rn))
+             {
+                 indexToRemove = i;
+                 break; // 找到了
+             }
+             if(indexToRemove == -1)
+             {
+                 return false;
+             }
+         }
      }
  
      /**
