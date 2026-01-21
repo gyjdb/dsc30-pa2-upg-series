@@ -202,7 +202,6 @@ public class Series {
          {
              throw new NullPointerException("drop(String rn): rn can't be null");
          }
-         return false;
          // 2. 检查字符串是否为空
          if(rn.isEmpty())
          {
@@ -212,16 +211,37 @@ public class Series {
          int indexToRemove = -1;
          for(int i = 0;i < this.rowNames.length;i++)
          {
-             if(this.rowNames[i].equals(rn))
-             {
+             if(this.rowNames[i].equals(rn)) {
                  indexToRemove = i;
                  break; // 找到了
              }
-             if(indexToRemove == -1)
-             {
-                 return false;
-             }
          }
+         // 4. 没找到返回 false
+         if(indexToRemove == -1)
+         {
+             return false;
+         }
+         // 5. 找到了换新数组
+         int newLength = rowNames.length - 1;
+         String[] newRowNames = new String[newLength];
+         Integer[] newData = new Integer[newLength];
+         // 第一段：复制 [0] 到 [indexToRemove - 1] ，注意这里长度是 indexToRemove
+         if(indexToRemove > 0)
+         {
+             System.arraycopy(this.rowNames, 0, newRowNames, 0, indexToRemove);
+             System.arraycopy(this.data, 0, newData, 0, indexToRemove);
+         }
+         // 第二段：复制 [indexToRemove + 1] 到最后
+         // 这里的长度计算是：总长度 - 前段数组的长度 indexToRemove - 1
+         int elementsAfter = this.rowNames.length - indexToRemove - 1;
+         if(elementsAfter > 0)
+         {
+             System.arraycopy(this.rowNames, indexToRemove + 1 , newRowNames, indexToRemove, elementsAfter);
+             System.arraycopy(this.data, indexToRemove + 1 , newData, indexToRemove, elementsAfter);
+         }
+         this.rowNames = newRowNames;
+         this.data = newData;
+         return true;
      }
  
      /**
