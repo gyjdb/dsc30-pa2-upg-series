@@ -77,5 +77,4 @@ public class Tool {
 
         return maxVal;
     }
-    }
 }
