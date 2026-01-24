@@ -250,7 +250,19 @@ public class Series {
       * @param value the new value to replace null values
       */
      public void fillNull(Integer value) {
-         // TODO: Implement fillNull method
+         // 1. 检查输入是否为 null
+         if(value == null)
+         {
+             throw new IllegalArgumentException("fillNull(Integer value): value can't be null");
+         }
+         // 2. 进行遍历替换
+         for(int i = 0;i < data.length;i++)
+         {
+             if(data[i] == null)
+             {
+                data[i] = value;
+             }
+         }
      }
  
      /**
@@ -258,8 +270,19 @@ public class Series {
       *
       */
      public void fillNullWithMean() {
-         // TODO: Implement fillNullWithMean method
-         // Handle ArithmeticException that could be raised from mean()
+         Integer meanVal = null;
+         try{
+             // 1. 尝试计算平均值
+             meanVal = Tool.mean(this);
+         } catch (Exception e) {
+             // 2. 出现任何问题平均值为 null
+             meanVal = null;
+         }
+         if(meanVal != null)
+         {
+            this.fillNull(meanVal);
+         }
+
      }
 
     public static void main(String[] args) {
