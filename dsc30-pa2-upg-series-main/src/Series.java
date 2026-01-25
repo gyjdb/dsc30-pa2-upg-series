@@ -275,11 +275,7 @@ public class Series {
              // 2. 出现任何问题平均值为 null
              meanVal = null;
          }
-         if(meanVal != null)
-         {
-            this.fillNull(meanVal);
-         }
-
+         this.fillNull(meanVal); // meanVal 为 null 时，会抛 fillNull(T value)
      }
 
     public static void main(String[] args) {
