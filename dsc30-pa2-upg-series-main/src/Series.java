@@ -106,12 +106,9 @@ public class Series {
          System.arraycopy(this.data, 0, newData, 0, oldLength);
 
          // 4. 处理新数据的 rowNames
-         if (rn == null)
-         {
+         if (rn == null || rn.isEmpty()) {
              newRowNames[oldLength] = String.valueOf(oldLength);
-         }
-         else
-         {
+         } else {
              newRowNames[oldLength] = rn;
          }
 
@@ -136,7 +133,7 @@ public class Series {
           // 2. 检查字符串是否为空
           if(rn.isEmpty())
           {
-               throw new IllegalArgumentException("loc(String rn): rn can't be empty");
+               throw new IllegalArgumentException("loc(String rn): rn can't be an empty string");
           }
           // 3. 遍历 rowNames 进行查找
           for(int i = 0;i < this.rowNames.length;i++)
@@ -159,12 +156,12 @@ public class Series {
           // 1. 检查输入是否为 null
           if(rn == null)
           {
-               throw new NullPointerException("loc(String[] rn): rn can't be null");
+               throw new NullPointerException("loc(String[] rn): rn[] can't be null");
           }
           // 2. 检查数组是否为空
           if(rn.length == 0)
           {
-               throw new IllegalArgumentException("loc(String[] rn): rn can't be empty");
+               throw new IllegalArgumentException("loc(String[] rn): rn[] can't be an empty array");
           }
           // 3. 创建存放数组
           Integer[] results = new Integer[rn.length];
@@ -205,7 +202,7 @@ public class Series {
          // 2. 检查字符串是否为空
          if(rn.isEmpty())
          {
-             throw new IllegalArgumentException("drop(String rn): rn can't be empty");
+             throw new IllegalArgumentException("drop(String rn): rn can't be an empty String");
          }
          // 3. 寻找要删除的 index
          int indexToRemove = -1;
@@ -253,7 +250,7 @@ public class Series {
          // 1. 检查输入是否为 null
          if(value == null)
          {
-             throw new IllegalArgumentException("fillNull(Integer value): value can't be null");
+             throw new IllegalArgumentException("fillNull(T value): value can't be null");
          }
          // 2. 进行遍历替换
          for(int i = 0;i < data.length;i++)
