@@ -20,16 +20,16 @@ public class Tool {
         int count = 0;
 
         for (int i = 0; i < d.getLength(); i++) {
-            try {
-                // 3. 累加求和
-                int val = d.iloc(i);
+            Integer val = d.iloc(i);
+            if (val != null) {
                 sum += val;
                 count++;
-            } catch (NullPointerException e) {
-                // 4. 捕获 NPE 并跳过该值
             }
         }
-
+        if (count == 0) {
+            // 如果 Series 元素全是 null
+            throw new IllegalArgumentException("mean (Series d): d can't be empty");
+        }
         // 5. 计算平均值
         // 如果 count 为 0，这里会自动抛出 ArithmeticException
         return sum / count;
@@ -52,29 +52,20 @@ public class Tool {
         }
 
         Integer maxVal = null;
-        boolean hasValidData = false;
 
         for (int i = 0; i < d.getLength(); i++) {
-            try {
-                // 3. 获取数据
-                // 同样利用拆箱触发 NPE 检查
-                int val = d.iloc(i);
-
-                // 4. 更新最大值
+            Integer val = d.iloc(i);
+            if (val != null) {
                 if (maxVal == null || val > maxVal) {
                     maxVal = val;
                 }
-                hasValidData = true;
-            } catch (NullPointerException e) {
-                // 5. 捕获 NPE 并跳过
             }
         }
 
-        // 6. 如果全是 null，显式抛出 ArithmeticException
-        if (!hasValidData) {
-            throw new ArithmeticException();
+        if (maxVal == null) {
+            // 全是 null 的情况，抛出 IllegalArgumentException
+            throw new IllegalArgumentException("max (Series d): d can't be empty");
         }
-
         return maxVal;
     }
 }
