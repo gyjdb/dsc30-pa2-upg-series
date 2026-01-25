@@ -125,7 +125,7 @@ public class Series {
       *
       * @param rn the row name to search for
       */
-     public Integer loc(String rn) {
+     public Integer loc(String rn) throws NullPointerException, IllegalArgumentException{
           if(rn == null)
           {
                throw new NullPointerException("loc(String rn): rn can't be null");
@@ -152,7 +152,7 @@ public class Series {
       *
       * @param rn an array of row names to search for
       */
-     public Integer[] loc(String[] rn) {
+     public Integer[] loc(String[] rn) throws NullPointerException, IllegalArgumentException{
           // 1. 检查输入是否为 null
           if(rn == null)
           {
@@ -193,7 +193,7 @@ public class Series {
       *
       * @param rn the row name of the pair to be removed
       */
-     public boolean drop(String rn) {
+     public boolean drop(String rn) throws NullPointerException, IllegalArgumentException{
          // 1. 检查 rn 是否为 null
          if (rn == null)
          {
@@ -246,7 +246,7 @@ public class Series {
       *
       * @param value the new value to replace null values
       */
-     public void fillNull(Integer value) {
+     public void fillNull(Integer value) throws IllegalArgumentException{
          // 1. 检查输入是否为 null
          if(value == null)
          {
@@ -266,7 +266,7 @@ public class Series {
       * Replace any data value that is null with the mean of the Series.
       *
       */
-     public void fillNullWithMean() {
+     public void fillNullWithMean() throws IllegalArgumentException{
          Integer meanVal = null;
          try{
              // 1. 尝试计算平均值
