@@ -125,7 +125,7 @@ public class Series {
       *
       * @param rn the row name to search for
       */
-     public Integer loc(String rn) throws NullPointerException, IllegalArgumentException{
+     public Integer loc(String rn) {
           if(rn == null)
           {
                throw new NullPointerException("loc(String rn): rn can't be null");
@@ -152,7 +152,7 @@ public class Series {
       *
       * @param rn an array of row names to search for
       */
-     public Integer[] loc(String[] rn) throws NullPointerException, IllegalArgumentException{
+     public Integer[] loc(String[] rn) {
           // 1. 检查输入是否为 null
           if(rn == null)
           {
