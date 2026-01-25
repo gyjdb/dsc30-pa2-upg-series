@@ -65,7 +65,7 @@ public class Tool {
 
         if (maxVal == null) {
             // 全是 null 的情况，抛出 IllegalArgumentException
-            throw new IllegalArgumentException("max (Series d): d can't be empty");
+            throw new ArithmeticException("max (Series d): d can't be empty");
         }
         return maxVal;
     }
