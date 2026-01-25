@@ -5,7 +5,7 @@ public class Tool {
      *
      * @param d the Series object to calculate the mean from
      */
-    public static Integer mean(Series d) throws ArithmeticException {
+    public static Integer mean(Series d) {
         // 1. 检查输入是否为 null
         if (d == null) {
             throw new NullPointerException("mean (Series d): d can't be null");
@@ -40,7 +40,7 @@ public class Tool {
      *
      * @param d the Series object to find the maximum value from
      */
-    public static Integer max(Series d) throws IllegalArgumentException {
+    public static Integer max(Series d) {
         // 1. 检查输入是否为 null
         if (d == null) {
             throw new NullPointerException("max (Series d): d can't be null");
