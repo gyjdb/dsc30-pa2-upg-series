@@ -27,7 +27,6 @@ public class SeriesTestString {
     }
 
     @Test
-    @Test
     public void appendTest() {
         int oldLen = s.getLength();
         String firstVal = s.iloc(0);
