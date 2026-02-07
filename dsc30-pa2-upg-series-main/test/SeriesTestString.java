@@ -27,13 +27,26 @@ public class SeriesTestString {
     }
 
     @Test
+    @Test
     public void appendTest() {
         int oldLen = s.getLength();
+        String firstVal = s.iloc(0);
+        String firstName = s.getRowNames()[0];
+
         s.append("d", "hello");
 
         assertEquals(oldLen + 1, s.getLength());
         assertEquals("hello", s.loc("d"));
+
+        // buggy：不能插到最前面
+        assertEquals(firstVal, s.iloc(0));
+        assertEquals(firstName, s.getRowNames()[0]);
+
+        // 新元素必须在末尾
+        assertEquals("hello", s.iloc(oldLen));
+        assertEquals("d", s.getRowNames()[oldLen]);
     }
+
 
     @Test
     public void locTest() {
@@ -50,15 +63,14 @@ public class SeriesTestString {
 
     @Test
     public void locArrayTest() {
-        // 正常：混合存在/不存在
-        String[] out = s.loc(new String[]{"c", "zzz", "a"});
-        assertArrayEquals(new String[]{"z", null, "x"}, out);
+        Object[] out = s.loc(new String[]{"c", "zzz", "a"});
+        assertArrayEquals(new Object[]{"z", null, "x"}, out);
 
-        // 异常：null
         assertThrows(NullPointerException.class, () -> s.loc((String[]) null));
-        // 异常：空数组
         assertThrows(IllegalArgumentException.class, () -> s.loc(new String[]{}));
     }
+
+
 
     @Test
     public void ilocTest() {

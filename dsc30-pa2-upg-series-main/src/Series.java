@@ -98,26 +98,31 @@ public class Series <T>{
       * @param d the Integer data value to be added
       */
      public void append(String rn, T d) {
-         // 1. 计算新长度
          int oldLength = this.data.length;
          int newLength = oldLength + 1;
 
-         // 2. 创建新数组
          String[] newRowNames = new String[newLength];
-         T[] newData = Arrays.copyOf(data, oldLength + 1);
+         @SuppressWarnings("unchecked")
+         T[] newData = (T[]) new Object[newLength];
 
-         // 3. 搬运旧数据
          System.arraycopy(this.rowNames, 0, newRowNames, 0, oldLength);
          System.arraycopy(this.data, 0, newData, 0, oldLength);
 
-         newRowNames[oldLength] = rn;
+         // rn 为 null 或空串 -> 自动生成 index 名
+         if (rn == null || rn.isEmpty()) {
+             newRowNames[oldLength] = String.valueOf(oldLength);
+         } else {
+             newRowNames[oldLength] = rn;
+         }
+
          newData[oldLength] = d;
 
          this.rowNames = newRowNames;
          this.data = newData;
      }
- 
-     /**
+
+
+    /**
       * Retrieves a data value given a row name.
       *
       * @param rn the row name to search for
