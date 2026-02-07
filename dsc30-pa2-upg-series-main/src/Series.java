@@ -1,10 +1,10 @@
-public class Series {
+public class Series <T>{
 
      /** Row names of the series. */
      private String[] rowNames;
  
      /** The Integer array that contains the list of data that constitutes a Series object. */
-     private Integer[] data;
+     private T[] data;
  
      /**
       * Constructs a new Series object.
@@ -12,28 +12,31 @@ public class Series {
       * @param _rowNames an array of row names
       * @param _data an array of Integer data
       */
-     public Series(String[] _rowNames, Integer[] _data) {
+     public Series(String[] _rowNames, T[] _data) {
          // 1. 检查 _data 是否为 null
          if(_data == null)
          {
-             throw new NullPointerException("Series(String[] _index, Integer[] _data): _data can't be null. Terminating the program");
+             throw new NullPointerException(
+                     "Series(String[] _index, T[] _data): _data can't be null. Terminating the program");
          }
-         // 2. 深拷贝 data 数组
-         this.data = new Integer[_data.length];
+         // 2. 拷贝 data 数组，不能用 new
+         this.data = (T[]) new Object[_data.length];
          System.arraycopy(_data, 0, this.data, 0, _data.length);
          // 3. 处理 _rowNames
          try {
              // 检查长度是否匹配，如果在这里 _rowNames 是 null，
              // 系统试图读取它的 .length 属性，Java 自动抛出 NullPointerException。
              if (_rowNames.length != _data.length) {
-                 throw new IllegalArgumentException("Series(String[] _index, Integer[] _data): the length of _index and _data must be the same");
+                 throw new IllegalArgumentException("Series(String[] _index, T[] _data): the length of _index and _data must be the same");
              }
              // 初始化 _rowNames 数组
              this.rowNames = new String[_rowNames.length];
              // 检查 rowNames 是否含有 null
              for (int i = 0; i < _rowNames.length; i++) {
-                 if (_rowNames[i] == null) {
-                     throw new IllegalArgumentException("Series(String[] _index, Integer[] _data): _rowNames is not valid");
+                 if (_rowNames[i] == null || _rowNames[i].isEmpty()) {
+                     throw new IllegalArgumentException(
+                             "Series(String[] _index, T[] _data): _rowNames is not valid"
+                     );
                  }
                  this.rowNames[i] = _rowNames[i];
              }
@@ -92,30 +95,22 @@ public class Series {
       * @param rn the row name to be added
       * @param d the Integer data value to be added
       */
-     public void append(String rn, Integer d) {
+     public void append(String rn, T d) {
          // 1. 计算新长度
          int oldLength = this.data.length;
          int newLength = oldLength + 1;
 
          // 2. 创建新数组
          String[] newRowNames = new String[newLength];
-         Integer[] newData = new Integer[newLength];
+         T[] newData = (T[]) new Object[newLength];
 
          // 3. 搬运旧数据
          System.arraycopy(this.rowNames, 0, newRowNames, 0, oldLength);
          System.arraycopy(this.data, 0, newData, 0, oldLength);
 
-         // 4. 处理新数据的 rowNames
-         if (rn == null || rn.isEmpty()) {
-             newRowNames[oldLength] = String.valueOf(oldLength);
-         } else {
-             newRowNames[oldLength] = rn;
-         }
-
-         // 5. 填入新的 data
+         newRowNames[oldLength] = rn;
          newData[oldLength] = d;
 
-         // 6. 更新引用
          this.rowNames = newRowNames;
          this.data = newData;
      }
@@ -125,7 +120,7 @@ public class Series {
       *
       * @param rn the row name to search for
       */
-     public Integer loc(String rn) throws NullPointerException, IllegalArgumentException{
+     public T loc(String rn) throws NullPointerException, IllegalArgumentException{
           if(rn == null)
           {
                throw new NullPointerException("loc(String rn): rn can't be null");
@@ -152,7 +147,7 @@ public class Series {
       *
       * @param rn an array of row names to search for
       */
-     public Integer[] loc(String[] rn) throws NullPointerException, IllegalArgumentException{
+     public T[] loc(String[] rn) throws NullPointerException, IllegalArgumentException{
           // 1. 检查输入是否为 null
           if(rn == null)
           {
@@ -164,7 +159,7 @@ public class Series {
                throw new IllegalArgumentException("loc(String[] rn): rn[] can't be an empty array");
           }
           // 3. 创建存放数组
-          Integer[] results = new Integer[rn.length];
+          T[] results = (T[]) new Object[rn.length];
           for(int i = 0;i < results.length;i++)
           {
                // 调用单个 loc 的方法
