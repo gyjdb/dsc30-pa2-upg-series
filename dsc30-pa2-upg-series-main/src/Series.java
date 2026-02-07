@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Series <T>{
 
      /** Row names of the series. */
@@ -20,7 +22,7 @@ public class Series <T>{
                      "Series(String[] _index, T[] _data): _data can't be null. Terminating the program");
          }
          // 2. 拷贝 data 数组，不能用 new
-         this.data = (T[]) new Object[_data.length];
+         this.data = Arrays.copyOf(_data, _data.length);
          System.arraycopy(_data, 0, this.data, 0, _data.length);
          // 3. 处理 _rowNames
          try {
@@ -102,7 +104,7 @@ public class Series <T>{
 
          // 2. 创建新数组
          String[] newRowNames = new String[newLength];
-         T[] newData = (T[]) new Object[newLength];
+         T[] newData = Arrays.copyOf(data, oldLength + 1);
 
          // 3. 搬运旧数据
          System.arraycopy(this.rowNames, 0, newRowNames, 0, oldLength);
@@ -133,7 +135,7 @@ public class Series <T>{
           // 3. 遍历 rowNames 进行查找
           for(int i = 0;i < this.rowNames.length;i++)
           {
-               if(this.rowNames[i].equals(rn))
+               if(rn.equals(this.rowNames[i]))
                {
                     return data[i];
                }
@@ -159,7 +161,7 @@ public class Series <T>{
                throw new IllegalArgumentException("loc(String[] rn): rn[] can't be an empty array");
           }
           // 3. 创建存放数组
-          T[] results = (T[]) new Object[rn.length];
+          T[] results = Arrays.copyOf(data, rn.length);
           for(int i = 0;i < results.length;i++)
           {
                // 调用单个 loc 的方法
@@ -216,7 +218,7 @@ public class Series <T>{
          // 5. 找到了换新数组
          int newLength = rowNames.length - 1;
          String[] newRowNames = new String[newLength];
-         T[] newData = (T[]) new Object[newLength];
+         T[] newData = Arrays.copyOf(data, newLength);
          // 第一段：复制 [0] 到 [indexToRemove - 1] ，注意这里长度是 indexToRemove
          if(indexToRemove > 0)
          {
