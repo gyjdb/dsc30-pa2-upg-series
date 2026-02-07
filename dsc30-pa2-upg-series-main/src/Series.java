@@ -173,11 +173,11 @@ public class Series <T>{
       *
       * @param ind the index of the data to retrieve
       */
-     public Integer iloc(int ind) {
+     public T iloc(int ind) {
          try {
              // 直接访问数组，如果越界自动抛出异常
              return data[ind];
-         } catch (ArrayIndexOutOfBoundsException e) {
+         } catch (IndexOutOfBoundsException e) {
              System.out.println("the index " + ind + " is not valid.. returning null");
              return null;
          }
@@ -216,7 +216,7 @@ public class Series <T>{
          // 5. 找到了换新数组
          int newLength = rowNames.length - 1;
          String[] newRowNames = new String[newLength];
-         Integer[] newData = new Integer[newLength];
+         T[] newData = (T[]) new Object[newLength];
          // 第一段：复制 [0] 到 [indexToRemove - 1] ，注意这里长度是 indexToRemove
          if(indexToRemove > 0)
          {
@@ -241,7 +241,7 @@ public class Series <T>{
       *
       * @param value the new value to replace null values
       */
-     public void fillNull(Integer value) throws IllegalArgumentException{
+     public void fillNull(T value) throws IllegalArgumentException{
          // 1. 检查输入是否为 null
          if(value == null)
          {
@@ -256,30 +256,4 @@ public class Series <T>{
              }
          }
      }
- 
-     /**
-      * Replace any data value that is null with the mean of the Series.
-      *
-      */
-     public void fillNullWithMean() throws IllegalArgumentException{
-         Integer meanVal = null;
-         try{
-             // 1. 尝试计算平均值
-             meanVal = Tool.mean(this);
-         } catch (Exception e) {
-             // 2. 出现任何问题平均值为 null
-             meanVal = null;
-         }
-         this.fillNull(meanVal); // meanVal 为 null 时，会抛 fillNull(T value)
-     }
-
-    public static void main(String[] args) {
-        String[] names = {"a", "b", "c"};
-        Integer[] values = {10, 20, 30};
-
-        Series s = new Series(names, values);
-
-        System.out.println(s);
-    }
-
  }
